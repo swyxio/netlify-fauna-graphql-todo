@@ -1,0 +1,23 @@
+type User {
+  id: ID!
+  data: String!
+  lists: [List!]!
+}
+type List {
+  id: ID!
+  user: User!
+  name: String!
+  todos: [Todo!]!
+}
+type Todo {
+  id: ID!
+  user: User!
+  list: List!
+  task: String!
+  completed: Boolean
+}
+type Query {
+  allTodos: [Todo!]
+  allLists: [List!]
+  allUsers: [User!]
+}

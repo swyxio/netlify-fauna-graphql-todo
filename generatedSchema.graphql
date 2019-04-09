@@ -1,0 +1,99 @@
+type _DBMeta {
+  id: ID!
+  ts: Long!
+}
+
+type List {
+  _db: _DBMeta!
+  id: ID!
+  user: User!
+  name: String!
+  todos: [Todo!]!
+}
+
+input ListInput {
+  id: ID!
+  user: ListUserRelation
+  name: String!
+  todos: ListTodosRelation
+}
+
+input ListTodosRelation {
+  create: [TodoInput]
+  connect: [ID]
+  disconnect: [ID]
+}
+
+input ListUserRelation {
+  create: UserInput
+  connect: ID
+}
+
+scalar Long
+
+type Mutation {
+  createList(data: ListInput!): List!
+  updateList(id: ID!, data: ListInput!): List
+  deleteList(id: ID!): List
+  createUser(data: UserInput!): User!
+  updateUser(id: ID!, data: UserInput!): User
+  deleteUser(id: ID!): User
+  createTodo(data: TodoInput!): Todo!
+  updateTodo(id: ID!, data: TodoInput!): Todo
+  deleteTodo(id: ID!): Todo
+}
+
+type Query {
+  findListByID(id: ID!): List
+  findUserByID(id: ID!): User
+  findTodoByID(id: ID!): Todo
+  allLists: [List!]
+  allTodos: [Todo!]
+  allUsers: [User!]
+}
+
+type Todo {
+  _db: _DBMeta!
+  id: ID!
+  user: User!
+  list: List!
+  task: String!
+  completed: Boolean
+}
+
+input TodoInput {
+  id: ID!
+  user: TodoUserRelation
+  list: TodoListRelation
+  task: String!
+  completed: Boolean
+}
+
+input TodoListRelation {
+  create: ListInput
+  connect: ID
+}
+
+input TodoUserRelation {
+  create: UserInput
+  connect: ID
+}
+
+type User {
+  _db: _DBMeta!
+  id: ID!
+  data: String!
+  lists: [List!]!
+}
+
+input UserInput {
+  id: ID!
+  data: String!
+  lists: UserListsRelation
+}
+
+input UserListsRelation {
+  create: [ListInput]
+  connect: [ID]
+  disconnect: [ID]
+}
